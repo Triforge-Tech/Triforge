@@ -1,0 +1,416 @@
+---
+title: Building Scalable APIs with Node.js and Express
+publishedAt: 2024-01-10
+excerpt: Best practices and architectural patterns for building robust, scalable REST APIs that can handle millions of requests.
+coverImage: https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop
+author: john-smith
+tags:
+  - Node.js
+  - API
+  - Backend
+featured: true
+seo:
+  metaTitle: Building Scalable APIs with Node.js - Best Practices
+  metaDescription: Learn industry best practices for building scalable, maintainable REST APIs with Node.js, Express, and modern architectural patterns.
+  canonicalUrl: https://triforge.com/blog/building-scalable-apis
+---
+
+Building APIs that scale from hundreds to millions of users requires careful planning and adherence to proven architectural patterns. In this comprehensive guide, we'll explore the essential practices for creating robust, maintainable APIs.
+
+## Foundation: Project Structure
+
+A well-organized project structure is crucial for scalability:
+
+```
+src/
+├── config/          # Configuration files
+├── controllers/     # Request handlers
+├── middleware/      # Custom middleware
+├── models/          # Data models
+├── routes/          # Route definitions
+├── services/        # Business logic
+├── utils/           # Helper functions
+└── app.js          # Express app setup
+```
+
+## Essential Middleware Stack
+
+Start with a solid middleware foundation:
+
+```javascript
+import express from 'express'
+import helmet from 'helmet'
+import cors from 'cors'
+import rateLimit from 'express-rate-limit'
+import compression from 'compression'
+
+const app = express()
+
+// Security
+app.use(helmet())
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(','),
+  credentials: true
+}))
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+})
+app.use('/api/', limiter)
+
+// Body parsing
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true }))
+
+// Compression
+app.use(compression())
+```
+
+## Layered Architecture
+
+Separate concerns into distinct layers:
+
+### 1. Routes Layer
+
+Define your API endpoints:
+
+```javascript
+// routes/users.js
+import { Router } from 'express'
+import { authenticate } from '../middleware/auth.js'
+import * as userController from '../controllers/userController.js'
+
+const router = Router()
+
+router.get('/', authenticate, userController.getUsers)
+router.get('/:id', authenticate, userController.getUserById)
+router.post('/', userController.createUser)
+router.put('/:id', authenticate, userController.updateUser)
+router.delete('/:id', authenticate, userController.deleteUser)
+
+export default router
+```
+
+### 2. Controllers Layer
+
+Handle HTTP requests and responses:
+
+```javascript
+// controllers/userController.js
+import * as userService from '../services/userService.js'
+import { ValidationError } from '../utils/errors.js'
+
+export const getUsers = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10, search } = req.query
+    const users = await userService.getUsers({ page, limit, search })
+    
+    res.json({
+      success: true,
+      data: users,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: users.total
+      }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const createUser = async (req, res, next) => {
+  try {
+    const userData = req.body
+    
+    // Validation
+    if (!userData.email || !userData.password) {
+      throw new ValidationError('Email and password are required')
+    }
+    
+    const user = await userService.createUser(userData)
+    
+    res.status(201).json({
+      success: true,
+      data: user
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+```
+
+### 3. Services Layer
+
+Implement business logic:
+
+```javascript
+// services/userService.js
+import User from '../models/User.js'
+import { hashPassword } from '../utils/crypto.js'
+import { sendWelcomeEmail } from '../utils/email.js'
+
+export const getUsers = async ({ page, limit, search }) => {
+  const query = search 
+    ? { $or: [
+        { email: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: 'i' } }
+      ]}
+    : {}
+  
+  const users = await User.find(query)
+    .select('-password')
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .sort({ createdAt: -1 })
+  
+  const total = await User.countDocuments(query)
+  
+  return { users, total }
+}
+
+export const createUser = async (userData) => {
+  // Hash password
+  userData.password = await hashPassword(userData.password)
+  
+  // Create user
+  const user = await User.create(userData)
+  
+  // Send welcome email (async, non-blocking)
+  sendWelcomeEmail(user.email).catch(console.error)
+  
+  // Remove password from response
+  const userObject = user.toObject()
+  delete userObject.password
+  
+  return userObject
+}
+```
+
+## Error Handling
+
+Implement centralized error handling:
+
+```javascript
+// middleware/errorHandler.js
+export const errorHandler = (err, req, res, next) => {
+  console.error(err.stack)
+  
+  // Operational errors
+  if (err.isOperational) {
+    return res.status(err.statusCode).json({
+      success: false,
+      error: {
+        message: err.message,
+        code: err.code
+      }
+    })
+  }
+  
+  // Programming errors - don't leak details
+  res.status(500).json({
+    success: false,
+    error: {
+      message: 'Internal server error',
+      code: 'INTERNAL_ERROR'
+    }
+  })
+}
+
+// Custom error classes
+export class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message)
+    this.statusCode = statusCode
+    this.isOperational = true
+    Error.captureStackTrace(this, this.constructor)
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(message) {
+    super(message, 400)
+    this.code = 'VALIDATION_ERROR'
+  }
+}
+
+export class AuthenticationError extends AppError {
+  constructor(message = 'Authentication failed') {
+    super(message, 401)
+    this.code = 'AUTHENTICATION_ERROR'
+  }
+}
+```
+
+## Database Optimization
+
+Use proper indexing and query optimization:
+
+```javascript
+// models/User.js
+import mongoose from 'mongoose'
+
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    index: true // Index for fast lookups
+  },
+  name: {
+    type: String,
+    required: true,
+    index: true // Index for search
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false // Don't include by default
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+    index: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    index: true
+  }
+}, {
+  timestamps: true
+})
+
+// Compound index for common queries
+userSchema.index({ email: 1, role: 1 })
+
+export default mongoose.model('User', userSchema)
+```
+
+## Caching Strategy
+
+Implement Redis caching for frequently accessed data:
+
+```javascript
+// utils/cache.js
+import redis from 'redis'
+
+const client = redis.createClient({
+  url: process.env.REDIS_URL
+})
+
+client.connect()
+
+export const getCache = async (key) => {
+  const data = await client.get(key)
+  return data ? JSON.parse(data) : null
+}
+
+export const setCache = async (key, data, expiry = 3600) => {
+  await client.setEx(key, expiry, JSON.stringify(data))
+}
+
+export const deleteCache = async (key) => {
+  await client.del(key)
+}
+
+// Usage in service
+export const getUserById = async (id) => {
+  const cacheKey = `user:${id}`
+  
+  // Try cache first
+  let user = await getCache(cacheKey)
+  
+  if (!user) {
+    // Cache miss - fetch from database
+    user = await User.findById(id).select('-password')
+    
+    if (user) {
+      // Store in cache
+      await setCache(cacheKey, user, 3600)
+    }
+  }
+  
+  return user
+}
+```
+
+## API Documentation
+
+Use Swagger/OpenAPI for documentation:
+
+```javascript
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Documentation',
+      version: '1.0.0',
+      description: 'Comprehensive API documentation'
+    },
+    servers: [
+      {
+        url: process.env.API_URL,
+        description: 'API Server'
+      }
+    ]
+  },
+  apis: ['./src/routes/*.js']
+}
+
+const specs = swaggerJsdoc(options)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+```
+
+## Testing
+
+Write comprehensive tests:
+
+```javascript
+// __tests__/users.test.js
+import request from 'supertest'
+import app from '../src/app.js'
+
+describe('User API', () => {
+  describe('POST /api/users', () => {
+    it('should create a new user', async () => {
+      const userData = {
+        email: 'test@example.com',
+        password: 'securepassword123',
+        name: 'Test User'
+      }
+      
+      const response = await request(app)
+        .post('/api/users')
+        .send(userData)
+        .expect(201)
+      
+      expect(response.body.success).toBe(true)
+      expect(response.body.data.email).toBe(userData.email)
+      expect(response.body.data.password).toBeUndefined()
+    })
+    
+    it('should return 400 for invalid data', async () => {
+      const response = await request(app)
+        .post('/api/users')
+        .send({ email: 'invalid' })
+        .expect(400)
+      
+      expect(response.body.success).toBe(false)
+    })
+  })
+})
+```
+
+## Conclusion
+
+Building scalable APIs requires attention to architecture, performance, security, and maintainability. By following these patterns and best practices, you'll create APIs that can grow with your application's needs while remaining reliable and efficient.
+
+Remember: start simple, measure performance, and optimize based on real-world usage patterns. Premature optimization can be as harmful as no optimization at all.

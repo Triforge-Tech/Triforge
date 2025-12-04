@@ -1,0 +1,153 @@
+---
+title: Advanced TypeScript Types You Should Know
+publishedAt: 2024-01-05
+excerpt: Master advanced TypeScript type patterns including conditional types, mapped types, and utility types to write more robust code.
+coverImage: https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&h=630&fit=crop
+author: john-smith
+tags:
+  - TypeScript
+  - Programming
+  - Web Development
+featured: false
+seo:
+  metaTitle: Advanced TypeScript Types - Complete Guide
+  metaDescription: Deep dive into advanced TypeScript features including conditional types, mapped types, template literals, and custom utility types.
+  canonicalUrl: https://triforge.com/blog/typescript-advanced-types
+---
+
+TypeScript's type system is incredibly powerful. Beyond basic types, there are advanced patterns that can make your code more type-safe and expressive. Let's explore these advanced concepts.
+
+## Conditional Types
+
+Conditional types allow you to create types based on conditions:
+
+```typescript
+type IsString<T> = T extends string ? true : false
+
+type A = IsString<string>  // true
+type B = IsString<number>  // false
+
+// Practical example: Extract return type
+type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never
+
+function getUser() {
+  return { id: 1, name: 'John' }
+}
+
+type User = ReturnType<typeof getUser>  // { id: number; name: string }
+```
+
+## Mapped Types
+
+Transform properties of existing types:
+
+```typescript
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P]
+}
+
+type Optional<T> = {
+  [P in keyof T]?: T[P]
+}
+
+interface User {
+  id: number
+  name: string
+  email: string
+}
+
+type ReadonlyUser = Readonly<User>
+type PartialUser = Optional<User>
+```
+
+## Template Literal Types
+
+Create types from string literals:
+
+```typescript
+type EventName<T extends string> = `on${Capitalize<T>}`
+
+type ClickEvent = EventName<'click'>  // 'onClick'
+type HoverEvent = EventName<'hover'>  // 'onHover'
+
+// Practical use
+type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+type Endpoint = `/api/${Lowercase<HTTPMethod>}`
+
+const endpoint: Endpoint = '/api/get'  // Valid
+```
+
+## Utility Types
+
+TypeScript provides built-in utility types:
+
+```typescript
+// Pick - Select specific properties
+type UserBasic = Pick<User, 'id' | 'name'>
+
+// Omit - Exclude specific properties
+type UserWithoutEmail = Omit<User, 'email'>
+
+// Record - Create object type with specific keys
+type UserRoles = Record<'admin' | 'user' | 'guest', Permission[]>
+
+// Exclude - Remove types from union
+type PrimaryColors = 'red' | 'blue' | 'green' | 'yellow'
+type RGB = Exclude<PrimaryColors, 'yellow'>  // 'red' | 'blue' | 'green'
+```
+
+## Discriminated Unions
+
+Type-safe pattern matching:
+
+```typescript
+interface LoadingState {
+  status: 'loading'
+}
+
+interface SuccessState<T> {
+  status: 'success'
+  data: T
+}
+
+interface ErrorState {
+  status: 'error'
+  error: Error
+}
+
+type AsyncState<T> = LoadingState | SuccessState<T> | ErrorState
+
+function handleState<T>(state: AsyncState<T>) {
+  switch (state.status) {
+    case 'loading':
+      return 'Loading...'
+    case 'success':
+      return state.data  // TypeScript knows data exists
+    case 'error':
+      return state.error.message  // TypeScript knows error exists
+  }
+}
+```
+
+## Generic Constraints
+
+Restrict generic types:
+
+```typescript
+interface HasId {
+  id: number
+}
+
+function updateEntity<T extends HasId>(entity: T, updates: Partial<T>): T {
+  return { ...entity, ...updates }
+}
+
+const user = updateEntity(
+  { id: 1, name: 'John' },
+  { name: 'Jane' }
+)
+```
+
+## Conclusion
+
+These advanced TypeScript patterns enable you to write more type-safe, maintainable code. Master these concepts to level up your TypeScript skills.

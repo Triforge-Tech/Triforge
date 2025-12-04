@@ -1,0 +1,147 @@
+---
+title: Getting Started with Next.js 14 and App Router
+publishedAt: 2024-01-15
+excerpt: Learn how to build modern web applications with Next.js 14's App Router, server components, and streaming features.
+coverImage: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=630&fit=crop
+author: jane-doe
+tags:
+  - Next.js
+  - React
+  - Web Development
+featured: true
+seo:
+  metaTitle: Getting Started with Next.js 14 - Complete Guide
+  metaDescription: A comprehensive guide to building modern web applications with Next.js 14, covering App Router, server components, and best practices.
+  canonicalUrl: https://triforge.com/blog/getting-started-with-nextjs
+---
+
+Next.js 14 represents a significant leap forward in web development, introducing powerful features that make building modern applications faster and more efficient. In this guide, we'll explore the key concepts and get you up to speed with the latest version.
+
+## What's New in Next.js 14
+
+The App Router is now stable and production-ready, bringing several game-changing features:
+
+- **Server Components**: Default server rendering for improved performance
+- **Streaming**: Progressive rendering with React Suspense
+- **Layouts**: Shared UI across routes with nested layouts
+- **Server Actions**: Direct server mutations without API routes
+
+## Setting Up Your First Project
+
+Getting started is straightforward with the official `create-next-app`:
+
+```bash
+npx create-next-app@latest my-app
+cd my-app
+npm run dev
+```
+
+This will scaffold a new Next.js 14 project with TypeScript, Tailwind CSS, and ESLint pre-configured.
+
+## Understanding the App Directory
+
+The new `app/` directory uses a file-system based router where:
+
+- **page.tsx**: Defines a route's UI
+- **layout.tsx**: Wraps pages with shared UI
+- **loading.tsx**: Shows loading states
+- **error.tsx**: Handles errors gracefully
+
+Here's a simple page component:
+
+```tsx
+export default function Page() {
+  return (
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold">Welcome to Next.js 14</h1>
+      <p className="mt-4 text-lg text-gray-600">
+        Start building amazing web applications today.
+      </p>
+    </main>
+  )
+}
+```
+
+## Server vs Client Components
+
+By default, all components in the App Router are Server Components. This means:
+
+- They render on the server
+- They can directly access backend resources
+- They reduce client-side JavaScript
+
+Use Client Components when you need:
+
+- Browser APIs (localStorage, window)
+- Event handlers (onClick, onChange)
+- State and lifecycle hooks (useState, useEffect)
+
+```tsx
+'use client'
+
+import { useState } from 'react'
+
+export default function Counter() {
+  const [count, setCount] = useState(0)
+  
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  )
+}
+```
+
+## Data Fetching Made Simple
+
+Server Components can be async, making data fetching incredibly clean:
+
+```tsx
+async function getData() {
+  const res = await fetch('https://api.example.com/data', {
+    cache: 'force-cache' // Static generation
+  })
+  return res.json()
+}
+
+export default async function Page() {
+  const data = await getData()
+  
+  return <div>{/* Render data */}</div>
+}
+```
+
+## Metadata and SEO
+
+Next.js 14 provides a powerful metadata API:
+
+```tsx
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'My Page',
+  description: 'Page description for SEO',
+  openGraph: {
+    title: 'My Page',
+    description: 'Page description for social sharing',
+    images: ['/og-image.jpg'],
+  },
+}
+```
+
+## Next Steps
+
+Now that you understand the basics, explore these advanced topics:
+
+1. **Parallel Routes**: Render multiple pages simultaneously
+2. **Intercepting Routes**: Create modal-like experiences
+3. **Server Actions**: Perform mutations without API routes
+4. **Partial Prerendering**: Combine static and dynamic content
+
+The Next.js 14 documentation is excellent and covers all these topics in depth. Happy building!
+
+## Conclusion
+
+Next.js 14 with the App Router is a powerful framework that simplifies building modern web applications. Its focus on server-side rendering, streaming, and developer experience makes it an excellent choice for your next project.
+
+Start experimenting with these features, and you'll quickly see why Next.js has become the go-to framework for React developers worldwide.
