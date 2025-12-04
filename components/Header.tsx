@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
 import { Menu, X } from 'lucide-react'
@@ -24,7 +25,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg" />
+            <Image src="/logo.png" alt="TriForge Logo" width={32} height={32} />
             <span className="text-xl font-bold text-gray-900 dark:text-white">
               TriForge
             </span>

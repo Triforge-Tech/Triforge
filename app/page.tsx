@@ -1,7 +1,7 @@
-import Hero from '@/components/Hero'
-import Features from '@/components/Features'
-import RecentPosts from '@/components/RecentPosts'
 import CTASection from '@/components/CTASection'
+import Features from '@/components/Features'
+import Hero from '@/components/Hero'
+import RecentPosts from '@/components/RecentPosts'
 import { getRecentPosts } from '@/lib/blog'
 
 export const revalidate = 3600 // Revalidate every hour
