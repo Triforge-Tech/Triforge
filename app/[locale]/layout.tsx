@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = (key: string) => getTranslation(key, locale)
 
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://triforge.net'),
     title: {
       default: t('meta.title'),
       template: '%s | TriForge',

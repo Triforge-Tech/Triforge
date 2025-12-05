@@ -399,6 +399,73 @@ export const translations: Translations = {
   'footer.cookies': { en: 'Cookie Policy', bg: 'Политика за бисквитки' },
   'footer.rights': { en: 'All rights reserved.', bg: 'Всички права запазени.' },
 
+  // Portfolio Page
+  'nav.portfolio': { en: 'Portfolio', bg: 'Портфолио' },
+  'portfolio.hero.title': { en: 'Our Portfolio', bg: 'Нашето портфолио' },
+  'portfolio.hero.subtitle': {
+    en: 'Explore our latest projects and see how we help businesses transform their digital presence.',
+    bg: 'Разгледайте нашите последни проекти и вижте как помагаме на бизнеси да трансформират дигиталното си присъствие.',
+  },
+  'portfolio.cta.title': { en: 'Have a Project in Mind?', bg: 'Имате проект?' },
+  'portfolio.cta.subtitle': {
+    en: "Let's discuss how we can bring your vision to life with our expertise.",
+    bg: 'Нека обсъдим как можем да превърнем вашата визия в реалност с нашия опит.',
+  },
+  'portfolio.cta.button': { en: 'Start Your Project', bg: 'Започнете проекта си' },
+  'portfolio.viewProject': { en: 'View Project', bg: 'Виж проекта' },
+  'portfolio.technologies': { en: 'Technologies Used', bg: 'Използвани технологии' },
+
+  // WebFinanceDirect Project
+  'portfolio.wfd.title': { en: 'WebFinanceDirect', bg: 'WebFinanceDirect' },
+  'portfolio.wfd.subtitle': {
+    en: 'Web Platform & Mobile Applications',
+    bg: 'Уеб платформа и мобилни приложения',
+  },
+  'portfolio.wfd.description': {
+    en: 'A streamlined financing experience for lenders, dealers, and consumers. Serving auto, RV, marine, & powersport industries with a comprehensive digital solution.',
+    bg: 'Оптимизирано финансово изживяване за кредитори, дилъри и потребители. Обслужване на автомобилната, RV, морската и powersport индустрии с цялостно дигитално решение.',
+  },
+  'portfolio.wfd.feature1': {
+    en: 'Multi-platform financing portal',
+    bg: 'Мултиплатформен финансов портал',
+  },
+  'portfolio.wfd.feature2': {
+    en: 'Real-time loan processing',
+    bg: 'Обработка на заеми в реално време',
+  },
+  'portfolio.wfd.feature3': {
+    en: 'Dealer management system',
+    bg: 'Система за управление на дилъри',
+  },
+  'portfolio.wfd.feature4': {
+    en: 'Consumer mobile applications',
+    bg: 'Мобилни приложения за потребители',
+  },
+
+  // Battlezone Project
+  'portfolio.battlezone.title': { en: 'Battlezone', bg: 'Battlezone' },
+  'portfolio.battlezone.subtitle': { en: 'Indoor AirSoft Arena', bg: 'Закрита AirSoft арена' },
+  'portfolio.battlezone.description': {
+    en: 'The only indoor AirSoft arena in Bulgaria across 3 levels!',
+    bg: 'Единствената закрита AirSoft арена в България на 3 нива!',
+  },
+  'portfolio.battlezone.feature1': {
+    en: 'Online booking system',
+    bg: 'Онлайн система за резервации',
+  },
+  'portfolio.battlezone.feature2': {
+    en: 'Team management platform',
+    bg: 'Платформа за управление на отбори',
+  },
+  'portfolio.battlezone.feature3': {
+    en: 'Real-time game tracking',
+    bg: 'Проследяване на игри в реално време',
+  },
+  'portfolio.battlezone.feature4': {
+    en: 'Player statistics & rankings',
+    bg: 'Статистики и класации на играчи',
+  },
+
   // Metadata
   'meta.title': {
     en: 'TriForge - Innovative Tech Solutions',

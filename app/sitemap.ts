@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Static pages for both locales
   const locales = ['en', 'bg']
-  const routes = ['', '/about', '/services', '/blog', '/contact']
+  const routes = ['', '/about', '/services', '/portfolio', '/blog', '/contact']
 
   const staticPages = locales.flatMap((locale) =>
     routes.map((route) => ({
