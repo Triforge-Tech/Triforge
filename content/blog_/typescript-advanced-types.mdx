@@ -12,7 +12,7 @@ featured: false
 seo:
   metaTitle: Advanced TypeScript Types - Complete Guide
   metaDescription: Deep dive into advanced TypeScript features including conditional types, mapped types, template literals, and custom utility types.
-  canonicalUrl: https://triforge.com/blog/typescript-advanced-types
+  canonicalUrl: https://triforge.net/blog/typescript-advanced-types
 ---
 
 TypeScript's type system is incredibly powerful. Beyond basic types, there are advanced patterns that can make your code more type-safe and expressive. Let's explore these advanced concepts.
@@ -24,8 +24,8 @@ Conditional types allow you to create types based on conditions:
 ```typescript
 type IsString<T> = T extends string ? true : false
 
-type A = IsString<string>  // true
-type B = IsString<number>  // false
+type A = IsString<string> // true
+type B = IsString<number> // false
 
 // Practical example: Extract return type
 type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never
@@ -34,7 +34,7 @@ function getUser() {
   return { id: 1, name: 'John' }
 }
 
-type User = ReturnType<typeof getUser>  // { id: number; name: string }
+type User = ReturnType<typeof getUser> // { id: number; name: string }
 ```
 
 ## Mapped Types
@@ -67,14 +67,14 @@ Create types from string literals:
 ```typescript
 type EventName<T extends string> = `on${Capitalize<T>}`
 
-type ClickEvent = EventName<'click'>  // 'onClick'
-type HoverEvent = EventName<'hover'>  // 'onHover'
+type ClickEvent = EventName<'click'> // 'onClick'
+type HoverEvent = EventName<'hover'> // 'onHover'
 
 // Practical use
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type Endpoint = `/api/${Lowercase<HTTPMethod>}`
 
-const endpoint: Endpoint = '/api/get'  // Valid
+const endpoint: Endpoint = '/api/get' // Valid
 ```
 
 ## Utility Types
@@ -93,7 +93,7 @@ type UserRoles = Record<'admin' | 'user' | 'guest', Permission[]>
 
 // Exclude - Remove types from union
 type PrimaryColors = 'red' | 'blue' | 'green' | 'yellow'
-type RGB = Exclude<PrimaryColors, 'yellow'>  // 'red' | 'blue' | 'green'
+type RGB = Exclude<PrimaryColors, 'yellow'> // 'red' | 'blue' | 'green'
 ```
 
 ## Discriminated Unions
@@ -122,9 +122,9 @@ function handleState<T>(state: AsyncState<T>) {
     case 'loading':
       return 'Loading...'
     case 'success':
-      return state.data  // TypeScript knows data exists
+      return state.data // TypeScript knows data exists
     case 'error':
-      return state.error.message  // TypeScript knows error exists
+      return state.error.message // TypeScript knows error exists
   }
 }
 ```
@@ -142,10 +142,7 @@ function updateEntity<T extends HasId>(entity: T, updates: Partial<T>): T {
   return { ...entity, ...updates }
 }
 
-const user = updateEntity(
-  { id: 1, name: 'John' },
-  { name: 'Jane' }
-)
+const user = updateEntity({ id: 1, name: 'John' }, { name: 'Jane' })
 ```
 
 ## Conclusion

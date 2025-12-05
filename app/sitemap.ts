@@ -1,20 +1,14 @@
-import { MetadataRoute } from 'next'
 import { getAllPostSlugs } from '@/lib/blog'
+import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://triforge.com'
-  
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://triforge.net'
+
   // Get all blog post slugs
   const postSlugs = getAllPostSlugs()
-  
+
   // Static pages
-  const staticPages = [
-    '',
-    '/about',
-    '/services',
-    '/blog',
-    '/contact',
-  ].map((route) => ({
+  const staticPages = ['', '/about', '/services', '/blog', '/contact'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,

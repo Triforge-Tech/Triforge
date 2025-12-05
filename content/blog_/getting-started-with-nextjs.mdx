@@ -12,7 +12,7 @@ featured: true
 seo:
   metaTitle: Getting Started with Next.js 14 - Complete Guide
   metaDescription: A comprehensive guide to building modern web applications with Next.js 14, covering App Router, server components, and best practices.
-  canonicalUrl: https://triforge.com/blog/getting-started-with-nextjs
+  canonicalUrl: https://triforge.net/blog/getting-started-with-nextjs
 ---
 
 Next.js 14 represents a significant leap forward in web development, introducing powerful features that make building modern applications faster and more efficient. In this guide, we'll explore the key concepts and get you up to speed with the latest version.
@@ -54,9 +54,7 @@ export default function Page() {
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold">Welcome to Next.js 14</h1>
-      <p className="mt-4 text-lg text-gray-600">
-        Start building amazing web applications today.
-      </p>
+      <p className="mt-4 text-lg text-gray-600">Start building amazing web applications today.</p>
     </main>
   )
 }
@@ -83,12 +81,8 @@ import { useState } from 'react'
 
 export default function Counter() {
   const [count, setCount] = useState(0)
-  
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      Count: {count}
-    </button>
-  )
+
+  return <button onClick={() => setCount(count + 1)}>Count: {count}</button>
 }
 ```
 
@@ -99,14 +93,14 @@ Server Components can be async, making data fetching incredibly clean:
 ```tsx
 async function getData() {
   const res = await fetch('https://api.example.com/data', {
-    cache: 'force-cache' // Static generation
+    cache: 'force-cache', // Static generation
   })
   return res.json()
 }
 
 export default async function Page() {
   const data = await getData()
-  
+
   return <div>{/* Render data */}</div>
 }
 ```

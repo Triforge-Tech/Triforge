@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { ArrowRight, Mail } from 'lucide-react'
+import { useI18n } from '@/lib/i18n'
 
 export default function CTASection() {
+  const { t } = useI18n()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -25,11 +27,10 @@ export default function CTASection() {
           
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-              Ready to Transform Your Business?
+              {t('cta.title')}
             </h2>
             <p className="text-lg md:text-xl text-primary-50 mb-10">
-              Let's discuss how we can help you achieve your technology goals. 
-              Our team of experts is ready to bring your vision to life.
+              {t('cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -37,13 +38,13 @@ export default function CTASection() {
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-200 hover:shadow-lg"
               >
                 <Mail className="mr-2 w-5 h-5" />
-                Contact Us
+                {t('cta.button')}
               </Link>
               <Link
                 href="/services"
                 className="inline-flex items-center justify-center px-8 py-4 bg-primary-700 text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-200 border-2 border-white/20"
               >
-                Explore Services
+                {t('cta.explore')}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </div>

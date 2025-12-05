@@ -3,6 +3,7 @@
 ## 🚀 Quick Setup (3 minutes)
 
 ### 1. Install Dependencies
+
 ```bash
 npm install
 ```
@@ -14,6 +15,7 @@ cp .env.local.example .env.local
 ```
 
 Edit `.env.local` (optional - defaults work fine):
+
 ```env
 NEXT_PUBLIC_SITE_NAME=TriForge Technologies
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -31,7 +33,7 @@ Visit: **http://localhost:3000**
 
 Create a new file `content/blog/my-first-post.mdx`:
 
-```mdx
+````mdx
 ---
 title: My First Blog Post
 publishedAt: 2024-12-04
@@ -52,16 +54,19 @@ seo:
 This is my first blog post using **MDX**.
 
 ### Features
+
 - Write in Markdown
 - Add code blocks
 - Include images
 
 ```typescript
-const hello = "world";
+const hello = 'world'
 ```
+````
 
 Easy! 🎉
-```
+
+````
 
 Save and refresh - your post appears automatically!
 
@@ -73,7 +78,7 @@ npm run build        # Build for production
 npm run start        # Run production build
 npm run lint         # Run linter
 npm run type-check   # Check TypeScript
-```
+````
 
 ## 📁 Important Files
 
@@ -88,7 +93,9 @@ npm run type-check   # Check TypeScript
 ## 🎨 Customize
 
 ### Change Colors
+
 Edit `tailwind.config.ts`:
+
 ```typescript
 primary: {
   500: '#your-color',
@@ -97,23 +104,29 @@ primary: {
 ```
 
 ### Change Company Name
+
 Edit `.env.local`:
+
 ```env
 NEXT_PUBLIC_SITE_NAME=Your Company
 ```
 
 ### Add Pages
+
 Create file in `app/your-page/page.tsx`
 
 ### Add Blog Posts
+
 Create `.mdx` files in `content/blog/` with frontmatter
 
 ### Add Authors
+
 Create `.mdx` files in `content/authors/` with profile info
 
 ## 🚢 Deploy to Vercel
 
 1. Push to GitHub:
+
 ```bash
 git init
 git add .
@@ -131,7 +144,7 @@ git push -u origin main
 
 - Check `README.md` for detailed docs
 - Open an issue on GitHub
-- Contact: hello@triforge.com
+- Contact: hello@triforge.net
 
 ---
 

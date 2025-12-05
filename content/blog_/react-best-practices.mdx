@@ -12,7 +12,7 @@ featured: true
 seo:
   metaTitle: React Best Practices 2024 - Modern Development Guide
   metaDescription: Learn the latest React best practices including hooks patterns, TypeScript integration, performance optimization, and clean code principles.
-  canonicalUrl: https://triforge.com/blog/react-best-practices
+  canonicalUrl: https://triforge.net/blog/react-best-practices
 ---
 
 React has evolved significantly, and with it, the best practices for building applications. This guide covers modern patterns that will help you write cleaner, more maintainable React code in 2024.
@@ -36,14 +36,14 @@ export default function UserProfile({ userId, onUpdate }: UserProfileProps) {
   // Hooks
   const [isEditing, setIsEditing] = useState(false)
   const { data: user, isLoading } = useQuery(['user', userId], () => fetchUser(userId))
-  
+
   // Effects
   useEffect(() => {
     if (user) {
       document.title = `${user.name} - Profile`
     }
   }, [user])
-  
+
   // Event handlers
   const handleEdit = () => setIsEditing(true)
   const handleSave = async (data: User) => {
@@ -51,11 +51,11 @@ export default function UserProfile({ userId, onUpdate }: UserProfileProps) {
     setIsEditing(false)
     onUpdate?.(data)
   }
-  
+
   // Early returns
   if (isLoading) return <LoadingSpinner />
   if (!user) return <ErrorMessage />
-  
+
   // Render
   return (
     <div className="user-profile">
@@ -95,13 +95,11 @@ function useDebounce<T>(value: T, delay: number = 500): T {
 function SearchComponent() {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 300)
-  
-  const { data } = useQuery(
-    ['search', debouncedSearch],
-    () => searchAPI(debouncedSearch),
-    { enabled: !!debouncedSearch }
-  )
-  
+
+  const { data } = useQuery(['search', debouncedSearch], () => searchAPI(debouncedSearch), {
+    enabled: !!debouncedSearch,
+  })
+
   return <input value={search} onChange={(e) => setSearch(e.target.value)} />
 }
 ```
@@ -117,12 +115,8 @@ For component-specific state:
 ```tsx
 function Counter() {
   const [count, setCount] = useState(0)
-  
-  return (
-    <button onClick={() => setCount(c => c + 1)}>
-      Count: {count}
-    </button>
-  )
+
+  return <button onClick={() => setCount((c) => c + 1)}>Count: {count}</button>
 }
 ```
 
@@ -143,16 +137,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  
+
   const toggleTheme = () => {
-    setTheme(t => t === 'light' ? 'dark' : 'light')
+    setTheme((t) => (t === 'light' ? 'dark' : 'light'))
   }
-  
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  )
+
+  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
 }
 
 export function useTheme() {
@@ -180,23 +170,25 @@ interface CartStore {
 
 export const useCartStore = create<CartStore>((set) => ({
   items: [],
-  addItem: (item) => set((state) => ({ 
-    items: [...state.items, item] 
-  })),
-  removeItem: (id) => set((state) => ({ 
-    items: state.items.filter(i => i.id !== id) 
-  })),
-  clearCart: () => set({ items: [] })
+  addItem: (item) =>
+    set((state) => ({
+      items: [...state.items, item],
+    })),
+  removeItem: (id) =>
+    set((state) => ({
+      items: state.items.filter((i) => i.id !== id),
+    })),
+  clearCart: () => set({ items: [] }),
 }))
 
 // Usage
 function Cart() {
-  const items = useCartStore(state => state.items)
-  const removeItem = useCartStore(state => state.removeItem)
-  
+  const items = useCartStore((state) => state.items)
+  const removeItem = useCartStore((state) => state.removeItem)
+
   return (
     <div>
-      {items.map(item => (
+      {items.map((item) => (
         <CartItem key={item.id} {...item} onRemove={removeItem} />
       ))}
     </div>
@@ -217,7 +209,7 @@ import { memo, useMemo, useCallback } from 'react'
 const ExpensiveList = memo(function ExpensiveList({ items }: { items: Item[] }) {
   return (
     <ul>
-      {items.map(item => (
+      {items.map((item) => (
         <li key={item.id}>{item.name}</li>
       ))}
     </ul>
@@ -227,22 +219,20 @@ const ExpensiveList = memo(function ExpensiveList({ items }: { items: Item[] }) 
 function ParentComponent() {
   const [filter, setFilter] = useState('')
   const [items, setItems] = useState<Item[]>([])
-  
+
   // Memoize expensive computations
   const filteredItems = useMemo(() => {
-    return items.filter(item => 
-      item.name.toLowerCase().includes(filter.toLowerCase())
-    )
+    return items.filter((item) => item.name.toLowerCase().includes(filter.toLowerCase()))
   }, [items, filter])
-  
+
   // Memoize callbacks passed to child components
   const handleItemClick = useCallback((id: string) => {
     console.log('Clicked:', id)
   }, [])
-  
+
   return (
     <>
-      <input value={filter} onChange={e => setFilter(e.target.value)} />
+      <input value={filter} onChange={(e) => setFilter(e.target.value)} />
       <ExpensiveList items={filteredItems} />
     </>
   )
@@ -292,29 +282,29 @@ class ErrorBoundary extends Component<Props, State> {
     super(props)
     this.state = { hasError: false }
   }
-  
+
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error }
   }
-  
+
   componentDidCatch(error: Error, errorInfo: any) {
     console.error('Error caught by boundary:', error, errorInfo)
     // Log to error reporting service
   }
-  
+
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || (
-        <div className="error-container">
-          <h2>Something went wrong</h2>
-          <p>{this.state.error?.message}</p>
-          <button onClick={() => this.setState({ hasError: false })}>
-            Try again
-          </button>
-        </div>
+      return (
+        this.props.fallback || (
+          <div className="error-container">
+            <h2>Something went wrong</h2>
+            <p>{this.state.error?.message}</p>
+            <button onClick={() => this.setState({ hasError: false })}>Try again</button>
+          </div>
+        )
       )
     }
-    
+
     return this.props.children
   }
 }
@@ -342,13 +332,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // Use type inference
-export function Button({ 
-  variant = 'primary', 
+export function Button({
+  variant = 'primary',
   size = 'md',
   isLoading,
   children,
   className,
-  ...props 
+  ...props
 }: ButtonProps) {
   return (
     <button
@@ -371,10 +361,8 @@ interface ListProps<T> {
 function List<T>({ items, renderItem, keyExtractor }: ListProps<T>) {
   return (
     <ul>
-      {items.map(item => (
-        <li key={keyExtractor(item)}>
-          {renderItem(item)}
-        </li>
+      {items.map((item) => (
+        <li key={keyExtractor(item)}>{renderItem(item)}</li>
       ))}
     </ul>
   )
@@ -395,25 +383,25 @@ describe('Counter', () => {
     render(<Counter initialCount={5} />)
     expect(screen.getByText(/count: 5/i)).toBeInTheDocument()
   })
-  
+
   it('increments count on button click', async () => {
     const user = userEvent.setup()
     render(<Counter initialCount={0} />)
-    
+
     const button = screen.getByRole('button', { name: /increment/i })
     await user.click(button)
-    
+
     expect(screen.getByText(/count: 1/i)).toBeInTheDocument()
   })
-  
+
   it('calls onCountChange callback', async () => {
     const handleChange = jest.fn()
     const user = userEvent.setup()
     render(<Counter initialCount={0} onCountChange={handleChange} />)
-    
+
     const button = screen.getByRole('button', { name: /increment/i })
     await user.click(button)
-    
+
     expect(handleChange).toHaveBeenCalledWith(1)
   })
 })
@@ -429,15 +417,15 @@ function Modal({ isOpen, onClose, title, children }: ModalProps) {
     if (isOpen) {
       // Trap focus
       const previouslyFocused = document.activeElement as HTMLElement
-      
+
       return () => {
         previouslyFocused?.focus()
       }
     }
   }, [isOpen])
-  
+
   if (!isOpen) return null
-  
+
   return (
     <div
       role="dialog"
@@ -446,12 +434,9 @@ function Modal({ isOpen, onClose, title, children }: ModalProps) {
       className="modal-overlay"
       onClick={onClose}
     >
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2 id="modal-title">{title}</h2>
-        <button
-          aria-label="Close modal"
-          onClick={onClose}
-        >
+        <button aria-label="Close modal" onClick={onClose}>
           ×
         </button>
         {children}

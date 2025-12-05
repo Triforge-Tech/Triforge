@@ -5,6 +5,7 @@ A professional, modern tech company website built with Next.js 14+, TypeScript, 
 ## 🚀 Features
 
 ### Core Features
+
 - ✅ **Next.js 14+ with App Router** - Modern React framework with server components
 - ✅ **TypeScript** - Type-safe code throughout
 - ✅ **Tailwind CSS** - Utility-first CSS framework
@@ -13,6 +14,7 @@ A professional, modern tech company website built with Next.js 14+, TypeScript, 
 - ✅ **Fully Responsive** - Mobile-first design
 
 ### Pages
+
 - 🏠 **Homepage** - Hero section, features, recent blog posts, CTA
 - 📖 **About** - Company story, mission, team members with bios
 - 🛠️ **Services** - Detailed service offerings
@@ -21,6 +23,7 @@ A professional, modern tech company website built with Next.js 14+, TypeScript, 
 - 📧 **Contact** - Contact form with validation
 
 ### Blog Features
+
 - Rich text content with images
 - Code syntax highlighting for 10+ languages
 - Reading time estimation
@@ -34,6 +37,7 @@ A professional, modern tech company website built with Next.js 14+, TypeScript, 
 - SEO metadata per post
 
 ### Performance & SEO
+
 - Static generation with ISR (Incremental Static Regeneration)
 - Optimized images with next/image
 - Meta tags and Open Graph support
@@ -44,6 +48,7 @@ A professional, modern tech company website built with Next.js 14+, TypeScript, 
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
+
 - **Node.js** 18.17 or later
 - **npm** or **yarn** or **pnpm**
 - **Git**
@@ -115,8 +120,8 @@ NEXT_PUBLIC_SITE_DESCRIPTION=Innovative technology solutions for modern business
 
 # Email Service (Optional - for contact form)
 EMAIL_API_KEY=your_email_api_key
-EMAIL_FROM=contact@triforge.com
-EMAIL_TO=hello@triforge.com
+EMAIL_FROM=contact@triforge.net
+EMAIL_TO=hello@triforge.net
 ```
 
 ### 6. Run the Development Server
@@ -149,7 +154,7 @@ touch content/blog/my-new-post.mdx
 
 2. Add frontmatter and content:
 
-```mdx
+````mdx
 ---
 title: My New Blog Post
 publishedAt: 2024-12-04
@@ -164,25 +169,27 @@ featured: true
 seo:
   metaTitle: My New Blog Post - TriForge
   metaDescription: Learn about...
-  canonicalUrl: https://triforge.com/blog/my-new-post
+  canonicalUrl: https://triforge.net/blog/my-new-post
 ---
 
 ## Introduction
 
-Your markdown content here with **bold**, *italic*, [links](https://example.com).
+Your markdown content here with **bold**, _italic_, [links](https://example.com).
 
 ## Code Examples
 
 ```typescript
-const example = "Syntax highlighting works!"
+const example = 'Syntax highlighting works!'
 ```
+````
 
 ## Images
 
 ![Alt text](https://images.unsplash.com/...)
 
 And more markdown content...
-```
+
+````
 
 3. Save the file - Contentlayer will automatically generate types
 
@@ -192,7 +199,7 @@ And more markdown content...
 
 ```bash
 touch content/authors/john-doe.mdx
-```
+````
 
 2. Add author information:
 
@@ -210,6 +217,7 @@ github: https://github.com/johndoe
 ### MDX Features
 
 MDX supports:
+
 - **Markdown syntax**: headings, lists, links, images, blockquotes
 - **Code blocks**: with automatic syntax highlighting
 - **Frontmatter**: YAML metadata at the top of files
@@ -218,6 +226,7 @@ MDX supports:
 ### Computed Fields
 
 Contentlayer automatically generates:
+
 - **slug**: From filename (e.g., `my-new-post.mdx` → `my-new-post`)
 - **readingTime**: Calculated from word count
 - **headings**: Extracted for table of contents
@@ -229,6 +238,7 @@ Contentlayer automatically generates:
 Update the following files with your brand:
 
 **Colors** - `tailwind.config.ts`:
+
 ```typescript
 colors: {
   primary: {
@@ -241,11 +251,13 @@ colors: {
 ```
 
 **Company Info** - `components/Footer.tsx` and `.env.local`:
+
 - Company name
 - Contact information
 - Social links
 
 **Logo** - Replace in `components/Header.tsx`:
+
 ```typescript
 <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg" />
 ```
@@ -303,20 +315,21 @@ git push origin main
    - **Output Directory**: `.next` (auto-detected)
 
 5. **Add Environment Variables**:
-   
+
    Click "Environment Variables" and add:
-   
+
    ```
    NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
    NEXT_PUBLIC_SITE_NAME=TriForge Technologies
    NEXT_PUBLIC_SITE_DESCRIPTION=Innovative technology solutions
    ```
-   
+
    Optional email variables:
+
    ```
    EMAIL_API_KEY=your_email_api_key
-   EMAIL_FROM=contact@triforge.com
-   EMAIL_TO=hello@triforge.com
+   EMAIL_FROM=contact@triforge.net
+   EMAIL_TO=hello@triforge.net
    ```
 
 6. **Deploy**:
@@ -327,6 +340,7 @@ git push origin main
 ### Automatic Deployments
 
 Vercel automatically:
+
 - ✅ **Deploys on push** - Every push to `main` triggers a production deployment
 - ✅ **Preview deployments** - Pull requests get unique preview URLs
 - ✅ **Builds Contentlayer** - Generates types and processes MDX on each build
@@ -337,13 +351,14 @@ Vercel automatically:
 
 1. Go to your project settings on Vercel
 2. Click "Domains"
-3. Add your custom domain (e.g., `triforge.com`)
+3. Add your custom domain (e.g., `triforge.net`)
 4. Update DNS records as instructed by Vercel
 5. SSL certificate is automatically provisioned
 
 ### Build Output
 
 Your deployment includes:
+
 - **Static pages**: Pre-rendered at build time
 - **Blog posts**: Statically generated from MDX files
 - **API routes**: Serverless functions
@@ -352,6 +367,7 @@ Your deployment includes:
 ### Monitoring
 
 Monitor your deployment:
+
 - **Analytics**: Track page views and performance
 - **Logs**: View build and runtime logs
 - **Performance**: Lighthouse scores and Web Vitals
@@ -483,35 +499,42 @@ triforge/
 ### Common Issues
 
 **"Cannot find module" errors:**
+
 ```bash
 rm -rf node_modules package-lock.json .next .contentlayer
 npm install
 ```
 
 **Contentlayer build errors:**
+
 - Check your MDX frontmatter is valid YAML
 - Ensure required fields are present (title, publishedAt, excerpt, author)
 - Verify dates are in YYYY-MM-DD format
 - Run `npm run build` to see detailed error messages
 
 **Images not loading:**
+
 - Ensure image URLs are absolute (start with `https://`)
 - Add image domains to `next.config.js` `images.remotePatterns`
 - For Unsplash images, add `images.unsplash.com`
 
 **Build errors on Vercel:**
+
 - Check build logs in Vercel dashboard
 - Ensure all environment variables are set
 - Verify Node.js version is 18.17 or later
 - Clear build cache and redeploy
 
 **TypeScript errors:**
+
 ```bash
 npm run type-check
 ```
 
 **Content not updating:**
+
 - Delete `.contentlayer` directory and rebuild:
+
 ```bash
 rm -rf .contentlayer
 npm run dev
@@ -527,7 +550,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## 📞 Support
 
-For questions or support, please open an issue on GitHub or contact us at hello@triforge.com.
+For questions or support, please open an issue on GitHub or contact us at hello@triforge.net.
 
 ---
 
