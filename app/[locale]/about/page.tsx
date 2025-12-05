@@ -15,10 +15,10 @@ export default function AboutPage() {
       linkedin: 'https://www.linkedin.com/in/vyacheslav-kara-05a8b7b7/',
     },
     {
-      name: 'Alexander Aldzhabari',
-      role: t('about.team.alexander.role'),
+      name: 'Alexandar Aldzhabari',
+      role: t('about.team.alexandar.role'),
       image: '/team/michael.jpg',
-      bio: t('about.team.alexander.bio'),
+      bio: t('about.team.alexandar.bio'),
       linkedin: 'https://www.linkedin.com/in/alexander-aljabari-53074322b/',
     },
     {

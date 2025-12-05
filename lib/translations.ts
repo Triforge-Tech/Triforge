@@ -147,8 +147,8 @@ export const translations: Translations = {
     en: '15+ years in tech leadership, passionate about AI and cloud innovation.',
     bg: '15+ години в технологичното лидерство, страст към AI и облачни иновации.',
   },
-  'about.team.alexander.role': { en: 'Co-Founder', bg: 'Съосновател' },
-  'about.team.alexander.bio': {
+  'about.team.alexandar.role': { en: 'Co-Founder', bg: 'Съосновател' },
+  'about.team.alexandar.bio': {
     en: 'Expert in mobile and web development, driving technical excellence.',
     bg: 'Експерт в мобилна и уеб разработка, движещ техническото съвършенство.',
   },
