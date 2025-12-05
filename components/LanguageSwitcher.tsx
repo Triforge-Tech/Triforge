@@ -1,6 +1,6 @@
 'use client'
 
-import { useI18n, Locale } from '@/lib/i18n'
+import { Locale, useI18n } from '@/lib/i18n'
 import { Globe } from 'lucide-react'
 
 export default function LanguageSwitcher() {

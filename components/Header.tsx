@@ -1,13 +1,13 @@
 'use client'
 
+import { useI18n } from '@/lib/i18n'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import ThemeToggle from './ThemeToggle'
 import LanguageSwitcher from './LanguageSwitcher'
-import { useI18n } from '@/lib/i18n'
+import ThemeToggle from './ThemeToggle'
 
 const navigation = [
   { key: 'nav.home', href: '' },
@@ -24,7 +24,7 @@ export default function Header() {
 
   // Helper to create locale-aware links
   const getLocalizedHref = (href: string) => `/${locale}${href}`
-  
+
   // Check if current path matches (accounting for locale prefix)
   const isActivePath = (href: string) => {
     const localizedHref = getLocalizedHref(href)

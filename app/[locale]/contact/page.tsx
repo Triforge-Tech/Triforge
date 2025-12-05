@@ -1,11 +1,11 @@
 'use client'
 
+import { useI18n } from '@/lib/i18n'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Mail, Send } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useI18n } from '@/lib/i18n'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -67,9 +67,7 @@ export default function ContactForm() {
             <h1 className="mb-6 text-4xl font-bold text-gray-900 dark:text-white md:text-6xl">
               {t('contact.hero.title')}
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              {t('contact.hero.subtitle')}
-            </p>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{t('contact.hero.subtitle')}</p>
           </div>
         </div>
       </section>
@@ -93,7 +91,9 @@ export default function ContactForm() {
                     <Mail className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
-                    <h3 className="mb-1 font-semibold text-gray-900 dark:text-white">{t('contact.info.email')}</h3>
+                    <h3 className="mb-1 font-semibold text-gray-900 dark:text-white">
+                      {t('contact.info.email')}
+                    </h3>
                     <a
                       href="mailto:info@triforge.net"
                       className="text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"

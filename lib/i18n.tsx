@@ -1,9 +1,9 @@
 'use client'
 
-import { createContext, useContext, ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { translations } from './translations'
+import { createContext, ReactNode, useContext } from 'react'
 import type { Locale } from './locales'
+import { translations } from './translations'
 
 export type { Locale }
 
@@ -37,11 +37,7 @@ export function I18nProvider({ children, locale }: { children: ReactNode; locale
     return translation[locale]
   }
 
-  return (
-    <I18nContext.Provider value={{ locale, t, switchLocale }}>
-      {children}
-    </I18nContext.Provider>
-  )
+  return <I18nContext.Provider value={{ locale, t, switchLocale }}>{children}</I18nContext.Provider>
 }
 
 export function useI18n() {

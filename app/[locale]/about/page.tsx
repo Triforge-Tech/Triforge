@@ -268,7 +268,10 @@ export default function AboutPage() {
           </div>
           <div className="flex flex-wrap justify-center gap-8">
             {team.map((member) => (
-              <div key={member.name} className="group w-full text-center md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]">
+              <div
+                key={member.name}
+                className="group w-full text-center md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]"
+              >
                 <div className="relative mx-auto mb-4 h-48 w-48 overflow-hidden rounded-full">
                   <div className="h-full w-full bg-gradient-to-br from-primary-400 to-primary-600" />
                   {/* Placeholder - replace with actual images */}

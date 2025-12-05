@@ -7,21 +7,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Get all blog post slugs
   const postSlugs = getAllPostSlugs()
 
-  // Static pages
-  const staticPages = ['', '/about', '/services', '/blog', '/contact'].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: route === '' ? 1 : 0.8,
-  }))
+  // Static pages for both locales
+  const locales = ['en', 'bg']
+  const routes = ['', '/about', '/services', '/blog', '/contact']
 
-  // Blog posts
-  const blogPosts = postSlugs.map((slug) => ({
-    url: `${baseUrl}/blog/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }))
+  const staticPages = locales.flatMap((locale) =>
+    routes.map((route) => ({
+      url: `${baseUrl}/${locale}${route}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: route === '' ? 1 : 0.8,
+    }))
+  )
+
+  // Blog posts for both locales
+  const blogPosts = locales.flatMap((locale) =>
+    postSlugs.map((slug) => ({
+      url: `${baseUrl}/${locale}/blog/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }))
+  )
 
   return [...staticPages, ...blogPosts]
 }

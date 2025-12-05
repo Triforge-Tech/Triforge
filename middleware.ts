@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { locales, defaultLocale, type Locale } from './lib/locales'
+import { defaultLocale, locales, type Locale } from './lib/locales'
 
 function getLocale(request: NextRequest): Locale {
   // Check if there's a locale cookie

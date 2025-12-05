@@ -1,9 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { Code, Cloud, Cpu, Zap, Lock, Globe } from 'lucide-react'
 import { useI18n } from '@/lib/i18n'
+import { motion } from 'framer-motion'
+import { Cloud, Code, Cpu, Globe, Lock, Zap } from 'lucide-react'
+import { useInView } from 'react-intersection-observer'
 
 const featureKeys = [
   { icon: Code, titleKey: 'features.software.title', descKey: 'features.software.desc' },
@@ -22,23 +22,23 @@ export default function Features() {
   })
 
   return (
-    <section ref={ref} className="py-20 md:py-32 bg-white dark:bg-gray-950">
+    <section ref={ref} className="bg-white py-20 dark:bg-gray-950 md:py-32">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-5xl">
             {t('features.title')}
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
             {t('features.subtitle')}
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {featureKeys.map((feature, index) => {
             const Icon = feature.icon
             return (
@@ -47,17 +47,15 @@ export default function Features() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group p-8 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 hover:shadow-xl"
+                className="group rounded-2xl border border-gray-200 bg-gray-50 p-8 transition-all duration-300 hover:border-primary-500 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:hover:border-primary-500"
               >
-                <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 transition-transform duration-300 group-hover:scale-110 dark:bg-primary-900/20">
+                  <Icon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
                   {t(feature.titleKey)}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {t(feature.descKey)}
-                </p>
+                <p className="text-gray-600 dark:text-gray-400">{t(feature.descKey)}</p>
               </motion.div>
             )
           })}
