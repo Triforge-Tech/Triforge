@@ -384,6 +384,12 @@ export const translations: Translations = {
     en: 'Something went wrong. Please try again.',
     bg: 'Нещо се обърка. Моля, опитайте отново.',
   },
+  'contact.form.captcha.label': { en: "Verify you're human", bg: 'Потвърдете, че сте човек' },
+  'contact.form.captcha.placeholder': { en: 'Your answer', bg: 'Вашият отговор' },
+  'contact.form.captcha.error': {
+    en: 'Incorrect answer, please try again.',
+    bg: 'Грешен отговор, моля опитайте отново.',
+  },
   'contact.info.email': { en: 'Email', bg: 'Имейл' },
 
   // Footer

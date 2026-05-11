@@ -6,7 +6,12 @@ const DISCORD_WEBHOOK_URL =
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, email, company, phone, subject, message } = body
+    const { name, email, company, phone, subject, message, _hp } = body
+
+    // Honeypot: real users never set this field
+    if (_hp) {
+      return NextResponse.json({ message: 'Message sent successfully' }, { status: 200 })
+    }
 
     // Send Discord webhook notification
     const discordMessage = {

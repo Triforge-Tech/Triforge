@@ -18,10 +18,19 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>
 
+function generateCaptcha() {
+  const a = Math.floor(Math.random() * 10) + 1
+  const b = Math.floor(Math.random() * 10) + 1
+  return { a, b, answer: a + b }
+}
+
 export default function ContactForm() {
   const { t } = useI18n()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null)
+  const [captcha, setCaptcha] = useState(generateCaptcha)
+  const [captchaInput, setCaptchaInput] = useState('')
+  const [captchaError, setCaptchaError] = useState(false)
 
   const {
     register,
@@ -33,6 +42,13 @@ export default function ContactForm() {
   })
 
   const onSubmit = async (data: ContactFormData) => {
+    if (parseInt(captchaInput, 10) !== captcha.answer) {
+      setCaptchaError(true)
+      setCaptcha(generateCaptcha())
+      setCaptchaInput('')
+      return
+    }
+    setCaptchaError(false)
     setIsSubmitting(true)
     setSubmitStatus(null)
 
@@ -42,12 +58,14 @@ export default function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, _hp: '' }),
       })
 
       if (response.ok) {
         setSubmitStatus('success')
         reset()
+        setCaptcha(generateCaptcha())
+        setCaptchaInput('')
       } else {
         setSubmitStatus('error')
       }
@@ -222,6 +240,39 @@ export default function ContactForm() {
                   {errors.message && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">
                       {errors.message.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Honeypot — hidden from humans, bots fill it */}
+                <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+                  <label htmlFor="_hp">Leave this empty</label>
+                  <input type="text" id="_hp" name="_hp" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                {/* Math captcha */}
+                <div>
+                  <label
+                    htmlFor="captcha"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    {t('contact.form.captcha.label')} *&nbsp;
+                    <span className="font-semibold">
+                      {captcha.a} + {captcha.b} = ?
+                    </span>
+                  </label>
+                  <input
+                    type="number"
+                    id="captcha"
+                    value={captchaInput}
+                    onChange={(e) => { setCaptchaInput(e.target.value); setCaptchaError(false) }}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-colors focus:border-transparent focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-950 dark:text-white"
+                    placeholder={t('contact.form.captcha.placeholder')}
+                    autoComplete="off"
+                  />
+                  {captchaError && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                      {t('contact.form.captcha.error')}
                     </p>
                   )}
                 </div>
